@@ -3,7 +3,7 @@
 
 def apply_discount(price: int, discount_percent: int) -> int:
     """할인율(%)을 적용한 최종 가격을 돌려준다."""
-    return int(price * (1 + discount_percent / 100))
+    return int(price * (1 - discount_percent / 100))
 
 
 def cart_total(items: list[tuple[int, int]], discount_percent: int = 0) -> int:
