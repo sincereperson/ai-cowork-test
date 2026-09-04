@@ -52,6 +52,7 @@ def test_shipping_fee_custom_policy(amount, expected):
 
 # --- checkout_total 통합 테스트 (설계서 C1~C11) ---
 
+
 @pytest.mark.parametrize(
     "items, discount_percent, expected",
     [
