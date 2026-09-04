@@ -16,6 +16,21 @@ def test_cart_total_with_discount():
     assert cart_total(items, 20) == 20000
 
 
+# --- apply_discount 정수 연산 회귀 가드 (PR #5 리뷰: float 절삭이 배송비 경계를 뒤집음) ---
+
+
+@pytest.mark.parametrize(
+    "price, discount_percent, expected",
+    [
+        (156_250, 68, 50_000),  # float 계산은 49,999 → 무료배송 경계 오판
+        (5, 80, 1),  # float 계산은 0
+        (10, 90, 1),  # float 계산은 0
+    ],
+)
+def test_apply_discount_exact_integer(price, discount_percent, expected):
+    assert apply_discount(price, discount_percent) == expected
+
+
 # --- shipping_fee 단위 테스트 (설계서 S1~S9) ---
 
 
@@ -74,3 +89,9 @@ def test_checkout_total(items, discount_percent, expected):
 
 def test_checkout_total_default_discount():  # C9 discount_percent 기본값 경로에서 경계 유지
     assert checkout_total([(50_000, 1)]) == 50_000
+
+
+def test_checkout_total_float_truncation_boundary():
+    # 156,250원 68% 할인 = 정확히 50,000원 → 무료배송 경계 (float 절삭이면 49,999원 → 3,000원 부과)
+    assert cart_total([(156_250, 1)], 68) == 50_000
+    assert checkout_total([(156_250, 1)], 68) == 50_000

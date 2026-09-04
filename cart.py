@@ -2,8 +2,12 @@
 
 
 def apply_discount(price: int, discount_percent: int) -> int:
-    """할인율(%)을 적용한 최종 가격을 돌려준다."""
-    return int(price * (1 - discount_percent / 100))
+    """할인율(%)을 적용한 최종 가격을 돌려준다.
+
+    정수 연산으로 계산한다. float 곱셈 후 int() 절삭은 정확값이 정수인 경우에도
+    1원 적게 나올 수 있어(예: 156,250원 68% → 49,999원) 배송비 경계 판정을 뒤집는다.
+    """
+    return price * (100 - discount_percent) // 100
 
 
 def cart_total(items: list[tuple[int, int]], discount_percent: int = 0) -> int:
