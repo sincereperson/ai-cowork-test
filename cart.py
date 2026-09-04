@@ -1,5 +1,8 @@
 """간단한 장바구니 모듈 — 팀 데모용."""
 
+FREE_SHIPPING_THRESHOLD = 50_000  # 이 금액 이상이면 무료배송
+SHIPPING_FEE = 3_000  # 미만이면 부과되는 배송비
+
 
 def apply_discount(price: int, discount_percent: int) -> int:
     """할인율(%)을 적용한 최종 가격을 돌려준다.
@@ -16,10 +19,6 @@ def cart_total(items: list[tuple[int, int]], discount_percent: int = 0) -> int:
     return apply_discount(subtotal, discount_percent)
 
 
-FREE_SHIPPING_THRESHOLD = 50_000  # 이 금액 이상이면 무료배송
-SHIPPING_FEE = 3_000  # 미만이면 부과되는 배송비
-
-
 def shipping_fee(
     amount: int,
     *,
@@ -29,6 +28,8 @@ def shipping_fee(
     """할인 후 상품 금액(amount)에 대한 배송비를 돌려준다.
 
     amount >= threshold 이면 0, 아니면 fee. 빈 장바구니(0원)는 0.
+    정책 변경은 모듈 상수 재할당이 아니라 threshold/fee 인자 주입으로 한다
+    (기본 인자는 함수 정의 시점에 고정되므로 상수를 바꿔도 반영되지 않는다).
     """
     if amount < 0:
         raise ValueError(f"amount must be >= 0, got {amount}")
