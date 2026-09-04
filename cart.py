@@ -42,9 +42,9 @@ def checkout_total(items: list[tuple[int, int]], discount_percent: int = 0) -> i
 if __name__ == "__main__":
     items = [(10000, 1)]
     print(f"10,000원 상품에 10% 할인 적용: {cart_total(items, 10):,}원")
-    for items in ([(30000, 1)], [(50000, 1)]):
-        goods = cart_total(items)
+    for demo_items in ([(30000, 1)], [(50000, 1)]):
+        goods = cart_total(demo_items)
         print(
             f"{goods:,}원 상품 배송비: {shipping_fee(goods):,}원"
-            f" → 결제 금액 {checkout_total(items):,}원"
+            f" → 결제 금액 {checkout_total(demo_items):,}원"
         )

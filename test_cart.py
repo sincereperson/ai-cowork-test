@@ -70,10 +70,13 @@ _BLOCKED_BY_ISSUE_1 = pytest.mark.xfail(
         ([(20_000, 1), (30_000, 1)], 0, 50_000),  # C6 복수 품목 합산
         pytest.param([(55_000, 1)], 10, 52_500, marks=_BLOCKED_BY_ISSUE_1),  # C7 할인 후 기준 핵심
         pytest.param([(60_000, 1)], 10, 54_000, marks=_BLOCKED_BY_ISSUE_1),  # C8 할인 후에도 무료
-        ([(50_000, 1)], 0, 50_000),  # C9 할인 0% 경계 유지
         pytest.param([(55_555, 1)], 10, 52_999, marks=_BLOCKED_BY_ISSUE_1),  # C10 int 절삭
         pytest.param([(100_000, 1)], 50, 50_000, marks=_BLOCKED_BY_ISSUE_1),  # C11 할인으로 경계 도달
     ],
 )
 def test_checkout_total(items, discount_percent, expected):
     assert checkout_total(items, discount_percent) == expected
+
+
+def test_checkout_total_default_discount():  # C9 discount_percent 기본값 경로에서 경계 유지
+    assert checkout_total([(50_000, 1)]) == 50_000
